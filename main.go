@@ -44,9 +44,14 @@ func main() {
 		for {
 			var input string
 			fmt.Printf("shurl > ")
+
+			// Get input.
 			scanner.Scan()
 			input = scanner.Text()
 			args := strings.Split(input, " ") // Split line into command and its args.
+			if args[0] == "" {
+				continue
+			}
 
 			// Check for built-ins.
 			if builtin(args) {
@@ -54,7 +59,10 @@ func main() {
 			}
 
 			// Handle shortcuts.
-			args, err := shortcut.Handle(args)
+			args, known, err := shortcut.Handle(args)
+			if known {
+				continue
+			}
 			if err != nil {
 				fmt.Printf("Error: %s\n", err)
 				continue
@@ -64,3 +72,8 @@ func main() {
 		}
 	}
 }
+
+// ]^ (up arrow?)
+// ^C
+// history
+// rc
